@@ -8,7 +8,10 @@
 void insertion_sort_list(listint_t **list)
 {
     if (*list == NULL || (*list)->next == NULL)
-        return;  // List is empty or has only one element
+    {
+        /* List is empty or has only one element */
+        return;
+    }
 
     listint_t *current, *next;
 
@@ -16,9 +19,10 @@ void insertion_sort_list(listint_t **list)
     {
         next = current->next;
 
-        // Insert current node into the sorted part of the list
+        /* Insert current node into the sorted part of the list */
         listint_t *prev = NULL;
         listint_t *temp = *list;
+
         while (temp != NULL && temp->n < current->n)
         {
             prev = temp;
@@ -27,22 +31,30 @@ void insertion_sort_list(listint_t **list)
 
         if (prev != NULL)
         {
-            // Detach the current node
+            /* Detach the current node */
             prev->next = current->next;
-            if (current->next != NULL)
-                current->next->prev = prev;
 
-            // Insert the current node before temp
+            if (current->next != NULL)
+            {
+                current->next->prev = prev;
+            }
+
+            /* Insert the current node before temp */
             current->next = temp;
             current->prev = prev;
+
             if (temp != NULL)
+            {
                 temp->prev = current;
+            }
             else
-                // Inserted at the end
+            {
+                /* Inserted at the end */
                 *list = current;
+            }
         }
 
-        // Print the list after the insertion
+        /* Print the list after the insertion */
         print_list(*list);
     }
 }
