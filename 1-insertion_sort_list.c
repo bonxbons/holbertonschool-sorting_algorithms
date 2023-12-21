@@ -2,7 +2,7 @@
 
 /**
  * insertion_sort_list - Sorts a doubly linked list of integers in ascending order
- *                        using the Insertion sort algorithm
+ * using the Insertion sort algorithm
  * @list: Pointer to a pointer to the head of the list
  */
 void insertion_sort_list(listint_t **list)
@@ -13,15 +13,15 @@ void insertion_sort_list(listint_t **list)
         return;
     }
 
-    listint_t *current, *next;
+    listint_t *current, *next, *prev, *temp;
 
     for (current = (*list)->next; current != NULL; current = next)
     {
         next = current->next;
 
         /* Insert current node into the sorted part of the list */
-        listint_t *prev = NULL;
-        listint_t *temp = *list;
+        prev = NULL;
+        temp = *list;
 
         while (temp != NULL && temp->n < current->n)
         {
