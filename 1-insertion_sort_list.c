@@ -1,38 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "sort.h"
 
-/**
- * insertion_sort_list - Sorts a doubly linked list using insertion sort.
- * @list: A pointer to the head of the list.
- */
 void insertion_sort_list(listint_t **list)
 {
+    listint_t *tracknode = NULL;
+    listint_t *last = NULL;
+    listint_t *placeholder = NULL;
+
     if (list == NULL || *list == NULL || (*list)->next == NULL)
         return;
 
-    listint_t *current, *temp;
+    tracknode = (*list)->next;
 
-    for (current = (*list)->next; current != NULL; current = temp)
+    while (tracknode != NULL)
     {
-        temp = current->next;
+        placeholder = tracknode->next;
+        last = tracknode->prev;
 
-        while (current->prev != NULL && current->n < current->prev->n)
+        while (last != NULL && tracknode->n < last->n)
         {
-            /* Swap nodes in the list */
-            current->prev->next = current->next;
-            if (current->next != NULL)
-                current->next->prev = current->prev;
-            
-            current->next = current->prev;
-            current->prev = current->next->prev;
+            if (last->prev != NULL)
+                last->prev->next = tracknode;
+            last->next = tracknode->next;
+            tracknode->next = last;
 
-            if (current->prev != NULL)
-                current->prev->next = current;
-            else
-                *list = current;
-
-            current->next->prev = current;
+            tracknode->prev = last->prev;
+            last->prev = tracknode;
+            if (last->next != NULL)
+                last->next->prev = last;
             
+            if (tracknode->prev == NULL)
+                (*list) = tracknode;
+
+            last = tracknode->prev;
+
             print_list(*list);
         }
+        tracknode = placeholder;
     }
 }
