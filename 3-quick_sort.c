@@ -2,11 +2,13 @@
 
 void quick_sort(int *array, size_t size)
 {
+    size_t pivot_index;  // Declare pivot_index at the beginning
+
     if (size <= 1) {
         return;  /* Base case: array with 0 or 1 element is already sorted */
     }
 
-    size_t pivot_index = partition(array, size);
+    pivot_index = partition(array, size);
     quick_sort(array, pivot_index);
     quick_sort(array + pivot_index + 1, size - pivot_index - 1);
 }
