@@ -3,7 +3,7 @@
 void quick_sort(int *array, size_t size)
 {
     if (size <= 1) {
-        return;  // Base case: array with 0 or 1 element is already sorted
+        return;  /* Base case: array with 0 or 1 element is already sorted */
     }
 
     size_t pivot_index = partition(array, size);
@@ -11,8 +11,7 @@ void quick_sort(int *array, size_t size)
     quick_sort(array + pivot_index + 1, size - pivot_index - 1);
 }
 
-size_t partition(int *array, size_t size)
-{
+size_t partition(int *array, size_t size){
     int pivot = array[size - 1];
     size_t i = 0;
 
