@@ -7,37 +7,42 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-    if (list == NULL || *list == NULL || (*list)->next == NULL)
-        return;
+    if (*list == NULL || (*list)->next == NULL)
+        return;  // List is empty or has only one element
 
-    listint_t *current;
-    listint_t *temp;
+    listint_t *current, *next;
 
-    current = (*list)->next;
-
-    while (current != NULL)
+    for (current = (*list)->next; current != NULL; current = next)
     {
-        temp = current;
+        next = current->next;
 
-        while (temp->prev != NULL && temp->n < temp->prev->n)
+        // Insert current node into the sorted part of the list
+        listint_t *prev = NULL;
+        listint_t *temp = *list;
+        while (temp != NULL && temp->n < current->n)
         {
-            /* Swap nodes */
-            temp->prev->next = temp->next;
-            if (temp->next != NULL)
-                temp->next->prev = temp->prev;
-
-            temp->next = temp->prev;
-            temp->prev = temp->prev->prev;
-
-            if (temp->prev != NULL)
-                temp->prev->next = temp;
-            else
-                *list = temp;
-
-            temp->next->prev = temp;
-            print_list(*list);
+            prev = temp;
+            temp = temp->next;
         }
 
-        current = current->next;
+        if (prev != NULL)
+        {
+            // Detach the current node
+            prev->next = current->next;
+            if (current->next != NULL)
+                current->next->prev = prev;
+
+            // Insert the current node before temp
+            current->next = temp;
+            current->prev = prev;
+            if (temp != NULL)
+                temp->prev = current;
+            else
+                // Inserted at the end
+                *list = current;
+        }
+
+        // Print the list after the insertion
+        print_list(*list);
     }
 }
