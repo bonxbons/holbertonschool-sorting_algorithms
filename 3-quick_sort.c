@@ -15,11 +15,12 @@ void quick_sort(int *array, size_t size)
 
 size_t partition(int *array, size_t size){
     int pivot = array[size - 1];
+    int temp;
     size_t i = 0, j;
 
     for (j = 0; j < size - 1; j++) {
         if (array[j] <= pivot) {
-            int temp = array[i];
+            temp = array[i];
             array[i] = array[j];
             array[j] = temp;
             i++;
@@ -27,7 +28,7 @@ size_t partition(int *array, size_t size){
     }
 
     /* Swap pivot with element at i*/
-    int temp = array[i];
+    temp = array[i];
     array[i] = array[size - 1];
     array[size - 1] = temp;
 
