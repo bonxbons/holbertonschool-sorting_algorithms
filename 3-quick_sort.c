@@ -1,38 +1,68 @@
-#include "sort.h"
+#include <stdio.h>
+
+void swap(int *a, int *b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+int lomuto_partition(int *array, int low, int high, size_t size)
+{
+	int pivot = array[high];
+	int i = low - 1;
+
+	for (int j = low; j <= high - 1; j++)
+	{
+		if (array[j] <= pivot)
+		{
+			i++;
+			swap(&array[i], &array[j]);
+			printf("Swapped: %d, %d\n", array[i], array[j]);
+		}
+	}
+
+	swap(&array[i + 1], &array[high]);
+	printf("Swapped: %d, %d\n", array[i + 1], array[high]);
+
+	return i + 1;
+}
+
+void quick_sort_recursive(int *array, int low, int high, size_t size)
+{
+	if (low < high)
+	{
+		int partition_index = lomuto_partition(array, low, high, size);
+
+		quick_sort_recursive(array, low, partition_index - 1, size);
+		quick_sort_recursive(array, partition_index + 1, high, size);
+	}
+}
 
 void quick_sort(int *array, size_t size)
 {
-    size_t pivot_index;  /* Declare pivot_index at the beginning*/
+	if (array == NULL || size < 2)
+		return;
 
-    if (size <= 1) {
-        return;  /* Base case: array with 0 or 1 element is already sorted */
-    }
-
-    pivot_index = partition(array, size);
-    quick_sort(array, pivot_index);
-    quick_sort(array + pivot_index + 1, size - pivot_index - 1);
+	quick_sort_recursive(array, 0, size - 1, size);
 }
 
-size_t partition(int *array, size_t size){
-    int pivot = array[size - 1];
-    int temp;
-    size_t i = 0, j;
+int main()
+{
+	int array[] = {79, 47, 68, 87, 84, 91, 21, 32, 34, 2, 95, 31, 20, 22, 98, 39, 92, 41, 62, 1};
+	size_t size = sizeof(array) / sizeof(array[0]);
 
-    for (j = 0; j < size - 1; j++) {
-        if (array[j] <= pivot) {
-            temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            i++;
-        }
-    }
+	printf("Original array: ");
+	for (size_t i = 0; i < size; i++)
+		printf("%d ", array[i]);
+	printf("\n");
 
-    /* Swap pivot with element at i*/
-    temp = array[i];
-    array[i] = array[size - 1];
-    array[size - 1] = temp;
+	quick_sort(array, size);
 
-    print_array(array, size);
+	printf("Sorted array: ");
+	for (size_t i = 0; i < size; i++)
+		printf("%d ", array[i]);
+	printf("\n");
 
-    return i;
+	return 0;
 }
