@@ -25,6 +25,8 @@ int lomuto_partition(int *array, int low, int high, size_t size)
 	swap(&array[i + 1], &array[high]);
 	printf("Swapped: %d, %d\n", array[i + 1], array[high]);
 
+	(void)size; // Unused parameter warning
+
 	return i + 1;
 }
 
@@ -47,7 +49,7 @@ void quick_sort(int *array, size_t size)
 	quick_sort_recursive(array, 0, size - 1, size);
 }
 
-int main()
+int main(void)
 {
 	int array[] = {79, 47, 68, 87, 84, 91, 21, 32, 34, 2, 95, 31, 20, 22, 98, 39, 92, 41, 62, 1};
 	size_t size = sizeof(array) / sizeof(array[0]);
