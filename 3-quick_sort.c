@@ -1,70 +1,75 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+#include "sort.h"
 
-void swap(int *a, int *b)
+/**
+ * partition - partitions an array or subarray
+ * @array: the array or subarray being partitioned
+ * @low: the first index
+ * @high: the last index
+ * @size: the size of the array
+ *
+ * Return: the index of the partition
+*/
+
+
+int partition(int *array, int low, int high, size_t size)
 {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+	int pivot = array[high];
+	int i = (low - 1), j, temp;
+
+	for (j = low; j <= high - 1; j++)
+	{
+		if (array[j] <= pivot)
+		{
+			i++;
+			temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+	}
+	if (array[high] != array[i + 1])
+	{
+		temp = array[high];
+		array[high] = array[i + 1];
+		array[i + 1] = temp;
+		print_array(array, size);
+	}
+	return (i + 1);
 }
 
-int lomuto_partition(int *array, int low, int high, size_t size)
+/**
+ * sort - recursively sorts the array, using partition to form subarrays
+ * @array: the array, or subarray, being sorted
+ * @low: the lowest index of the current array
+ * @high: the highest index of the current array
+ * @size: the size of the array
+*/
+
+void sort(int *array, int low, int high, size_t size)
 {
-    int pivot = array[high];
-    int i = low - 1;
+	int index;
 
-    for (int j = low; j <= high - 1; j++)
-    {
-        if (array[j] <= pivot)
-        {
-            i++;
-            swap(&array[i], &array[j]);
-            printf("Swapped: %d, %d\n", array[i], array[j]);
-        }
-    }
+	if (low < high)
+	{
+		index = partition(array, low, high, size);
 
-    swap(&array[i + 1], &array[high]);
-    printf("Swapped: %d, %d\n", array[i + 1], array[high]);
-
-    (void)size; /* Unused parameter warning */
-
-    return i + 1;
+		sort(array, low, index - 1, size);
+		sort(array, index + 1, high, size);
+	}
 }
 
-void quick_sort_recursive(int *array, int low, int high, size_t size)
+/**
+ * quick_sort - calls sort to recursively sort an array
+ * @arr: the array to be sorted
+ * @size: the size of the array
+*/
+
+void quick_sort(int *arr, size_t size)
 {
-    if (low < high)
-    {
-        int partition_index = lomuto_partition(array, low, high, size);
 
-        quick_sort_recursive(array, low, partition_index - 1, size);
-        quick_sort_recursive(array, partition_index + 1, high, size);
-    }
-}
+	int high = size - 1, low = 0;
 
-void quick_sort(int *array, size_t size)
-{
-    if (array == NULL || size < 2)
-        return;
-
-    quick_sort_recursive(array, 0, size - 1, size);
-}
-
-int main(void)
-{
-    int array[] = {79, 47, 68, 87, 84, 91, 21, 32, 34, 2, 95, 31, 20, 22, 98, 39, 92, 41, 62, 1};
-    size_t size = sizeof(array) / sizeof(array[0]);
-
-    printf("Original array: ");
-    for (size_t i = 0; i < size; i++)
-        printf("%d ", array[i]);
-    printf("\n");
-
-    quick_sort(array, size);
-
-    printf("Sorted array: ");
-    for (size_t i = 0; i < size; i++)
-        printf("%d ", array[i]);
-    printf("\n");
-
-    return 0;
+	sort(arr, low, high, size);
 }
